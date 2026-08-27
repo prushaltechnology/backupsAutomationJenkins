@@ -8,7 +8,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'indeed-db-pass', variable: 'DB_PASS')]) {
                         sh '''
                             set -a
-                            . ec2-instance-1/config.env
+                            . indeedinspiringwebsite/config.env
                             set +a
                             bash shared/backup.sh
                         '''
