@@ -13,8 +13,8 @@ pipeline {
 
         stage('Run Backup') {
             steps {
-                sshagent(credentials: ['ec2-instance-1-ssh-cred']) {
-                    withCredentials([string(credentialsId: 'ec2-instance-1-db-pass', variable: 'DB_PASS')]) {
+                sshagent(credentials: ['production-server-pem']) {
+                    withCredentials([string(credentialsId: 'indeed-db-pass', variable: 'DB_PASS')]) {
                         sh 'bash shared/backup.sh'
                     }
                 }
