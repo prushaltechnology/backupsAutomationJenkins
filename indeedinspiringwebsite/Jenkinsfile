@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Load Config') {
+            steps {
+                script {
+                    def config = readProperties file: 'ec2-instance-1/config.env'
+                    config.each { k, v -> env."${k}" = v }
+                }
+            }
+        }
+
+        stage('Run Backup') {
+            steps {
+                sshagent(credentials: ['ec2-instance-1-ssh-cred']) {
+                    withCredentials([string(credentialsId: 'ec2-instance-1-db-pass', variable: 'DB_PASS')]) {
+                        sh 'bash shared/backup.sh'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo "Backup failed for ${env.INSTANCE_NAME}"
+        }
+    }
+}
