@@ -10,7 +10,7 @@ mkdir -p "${LOCAL_BACKUP_DIR}"
 
 ssh -o StrictHostKeyChecking=no "${SERVER_USER}@${SERVER_HOST}" "
     mkdir -p /tmp/backup_${STAMP} &&
-    mysqldump -u ${DB_USER} -p'${DB_PASS}' ${DB_NAME} > /tmp/backup_${STAMP}/db.sql &&
+    mysqldump -u ${DB_USER} -p'${DB_PASS}' --no-tablespaces ${DB_NAME} > /tmp/backup_${STAMP}/db.sql &&
     cp -r ${REMOTE_DIR} /tmp/backup_${STAMP}/folder &&
     cp ${REMOTE_FILES} /tmp/backup_${STAMP}/ &&
     tar -czf /tmp/backup_${STAMP}.tar.gz -C /tmp backup_${STAMP} &&
